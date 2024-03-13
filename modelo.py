@@ -1,20 +1,23 @@
 from tkinter import messagebox
-from peewee import *
+from peewee import SqliteDatabase, Model, AutoField, CharField, IntegrityError
 from datetime import datetime
+from pathlib import Path
 
 
 from validar_campos import ValidarDatos
-
 from decorador import tipo_de_entrada
-
 from observador import Subject
 
-ruta_db = "bases_de_datos/data_base.db"
+
+ruta_db = Path("bases_de_datos/data_base.db")
+
 db = SqliteDatabase(ruta_db)
+db.connect()
 
 class BaseModel(Model):
     class Meta:
         database = db
+
 
 class Encuestaa(BaseModel):
     id = AutoField()
@@ -25,8 +28,7 @@ class Encuestaa(BaseModel):
     voto = CharField()
 
 
-db.connect()
-db.create_tables([Encuestaa])
+db.create_tables([Encuestaa], safe=True)
 
 
 class Abmc(Subject):
@@ -39,25 +41,27 @@ class Abmc(Subject):
         if code == 0:
 
             with db.atomic():
-                encuesta1 = Encuestaa()
-                encuesta1.nombre = nombre.get()
-                encuesta1.edad = edad.get()
-                encuesta1.email = email.get()
-                encuesta1.provincia = provincia.get()
-                encuesta1.voto = voto.get()
+                encuesta1 = Encuestaa(
+                    nombre = nombre.get(),
+                    edad = edad.get(),
+                    email = email.get(),
+                    provincia = provincia.get(),
+                    voto = voto.get()
+                )
 
                 try:
                     encuesta1.save()
                     self.actualizar_treeview(my_tree)
                     messagebox.showinfo("Guardar", "Elemento insertado correctamente")
+                    fecha_hora1 = fecha_hora()
 
                     self.notificar("Alta", nombre.get(), email.get(),
-                                datetime.today().strftime("%d/%m/%y"),
-                                datetime.now().strftime("%H:%M:%S"))
+                                   fecha_hora1[0], fecha_hora1[1]
+                                )
                     return code
 
                 except IntegrityError:
-                    messagebox.showerror("Error", "El correo " + email.get() + " ya fue ingresado")
+                    messagebox.showerror("Error", f"El correo {email.get()} ya fue ingresado")
                     code = 3
                     return code
 
@@ -85,13 +89,15 @@ class Abmc(Subject):
                 self.actualizar_treeview(my_tree)
                 messagebox.showinfo("Guardar", "Elemento modificado correctamente")
 
+                fecha_hora1 = fecha_hora()
+
                 self.notificar("Modificar", nombre.get(), email.get(),
-                               datetime.today().strftime("%d/%m/%y"),
-                               datetime.now().strftime("%H:%M:%S"))
+                               fecha_hora1[0], fecha_hora1[1]
+                               )
                 return code
 
             except IntegrityError:
-                messagebox.showerror("Error", "El correo " + email.get() + " ya fue ingresado")
+                messagebox.showerror("Error", f"El correo {email.get()} ya fue ingresado")
                 code = 3
                 return code
 
@@ -121,14 +127,17 @@ class Abmc(Subject):
                 code = 0
                 messagebox.showinfo("Eliminar", "Elemento eliminado correctamente")
 
+                fecha_hora1 = fecha_hora()
+
                 self.notificar("Baja", valor_id["values"][0], valor_id["values"][2],
-                               datetime.today().strftime("%d/%m/%y"),
-                               datetime.now().strftime("%H:%M:%S"))
+                               fecha_hora1[0], fecha_hora1[1]
+                               )
                 return code
 
             else:
                 messagebox.showinfo("Eliminar", "No fué posible eliminar el elemento")
                 return code
+
 
 
 
@@ -144,7 +153,7 @@ class Abmc(Subject):
 
 
 # ----------------------------------Fun. conteo_de_votos:
-    def conteo_de_votos(self):
+    """def conteo_de_votos(self):
 
         votos_grafico = []
 
@@ -169,4 +178,32 @@ class Abmc(Subject):
         votos_grafico.extend([conteo_blancos, conteo_juntos, conteo_siniestra,
                               conteo_libertad, conteo_union])
         print("votos: ", votos_grafico)
+        return votos_grafico"""
+
+
+    def conteo_de_votos(self):
+
+        conteos = {
+            "Voto en Blanco": 0,
+            "Juntos sin el cambio": 0,
+            "La SINiestra": 0,
+            "La libertad no avanza": 0,
+            "Por unión la patria": 0
+        }
+
+        for encuestas in Encuestaa.select():
+            voto = encuestas.voto
+            if voto in conteos:
+                conteos[voto] += 1
+
+        votos_grafico = list(conteos.values())
+        print("votos: ", votos_grafico)
         return votos_grafico
+
+
+
+# ----------------------------------Fun. fecha y hora
+def fecha_hora():
+    fecha = datetime.today().strftime("%d/%m/%y")
+    hora = datetime.now().strftime("%H:%M:%S")
+    return (fecha, hora)

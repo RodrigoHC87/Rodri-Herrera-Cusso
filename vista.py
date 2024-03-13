@@ -3,6 +3,8 @@ from tkinter.ttk import Combobox, Treeview, Style
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from tkinter import StringVar
+from pathlib import Path
+
 
 from modelo import *
 from visual.parametros_gui  import *
@@ -132,14 +134,14 @@ class Ventana(Frame):
 
 
         #--------------->     4th Frame     <---------------------------------
-        frame4= Frame(self, bg="#637A99")
+        frame4 = Frame(self, bg="#637A99")
         frame4.place(x=270, y=0, width=115, height=299)
 
-        self.ruta_img_enc = "visual/1.encuestar_img.png"
-        self.img_btn_enc=PhotoImage(file=self.ruta_img_enc)
+        self.ruta_img_enc = Path("visual/1.encuestar_img.png")
+        self.img_btn_enc = PhotoImage(file=self.ruta_img_enc)
 
-        self.ruta_img_graf = "visual/2.img_graficar.png"
-        self.img_btn_graficar=PhotoImage(file=self.ruta_img_graf)
+        self.ruta_img_graf = Path("visual/2.img_graficar.png")
+        self.img_btn_graficar = PhotoImage(file=self.ruta_img_graf)
 
         self.btn_encuestar = Button(frame4, command=lambda:self.fun_btn_encuestar(),
                                     image=self.img_btn_enc, border=0, cursor=b_csor)
@@ -152,6 +154,7 @@ class Ventana(Frame):
 
     # ---------FUNCIONES PRINCIPALES!------------------
     def fun_nuevo(self,):
+
         self.habilitar_entrys("normal")
         self.habilitar_btn_operaciones("disabled")
         self.habilitar_btn_guardar_cancelar("normal")
@@ -161,9 +164,12 @@ class Ventana(Frame):
 
 
     def fun_modificar(self):
+
+        self.apartado_visual_v.ord_aleatorio_candidatos(self.txt_int_voto)
         seleccionado = self.my_tree.focus()
         # Para conocer el valor del ID (en este caso)
         clave = self.my_tree.item(seleccionado, 'text')
+
         if clave == "":
             messagebox.showwarning("Modificar", "Debes seleccionar un elemento de la tabla")
         else:
@@ -178,10 +184,12 @@ class Ventana(Frame):
 
 
     def fun_eliminar(self):
+
         self.objeto_base.baja(self.my_tree)
 
 
     def fun_guardar(self):
+
         if self.id == -1:
             code = self.objeto_base.alta(self.nombre, self.edad, self.email, self.provincia, self.int_voto, self.my_tree)
         else:
@@ -196,21 +204,26 @@ class Ventana(Frame):
             self.habilitar_btn_guardar_cancelar("disabled")
             self.habilitar_entrys("disabled")
             self.habilitar_btn_operaciones("normal")
+            self.apartado_visual_v.unbinded_btn_email_edad(self.txt_email, self.txt_edad)
+
         else:
             self.validacion_gral(code)
 
 
     def fun_cancelar(self):
+
         respuesta = messagebox.askquestion("Cancelar", "Esta seguro que desea cancelar la operación actual?")
         if respuesta == messagebox.YES:
             self.apartado_visual_v.limpiar_entradas(self.nombre, self.edad, self.email, self.provincia, self.int_voto)
             self.habilitar_btn_guardar_cancelar("disabled")
             self.habilitar_entrys("disabled")
             self.habilitar_btn_operaciones("normal")
+            self.apartado_visual_v.unbinded_btn_email_edad(self.txt_email, self.txt_edad)
 
 
     # --------------- Botones Gráfico y Encuesta ---------------------------------------
     def fun_btn_encuestar(self):
+
         self.my_tree.place(x=0, y=0, width=683, height=299)
         plt.close("all")
         try:
@@ -222,6 +235,7 @@ class Ventana(Frame):
 
 
     def fun_btn_graficar(self, frame3):
+
         votos_grafico = self.objeto_base.conteo_de_votos()
         plt.close("all")
         self.my_tree.place_forget()
@@ -244,6 +258,7 @@ class Ventana(Frame):
 
     #-------------- Funciones tkinter ----------------------------------------
     def habilitar_entrys(self, estado):
+
         self.txt_nombre.configure(state=estado)
         self.txt_edad.configure(state=estado)
         self.txt_email.configure(state=estado)
@@ -256,22 +271,28 @@ class Ventana(Frame):
 
 
     def habilitar_btn_operaciones(self, estado):
+
         self.btn_nuevo.configure(state=estado)
         self.btn_modificar.configure(state=estado)
         self.btn_eliminar.configure(state=estado)
 
 
     def habilitar_btn_guardar_cancelar(self, estado):
+
         self.btn_guardar.configure(state=estado)
         self.btn_cancelar.configure(state=estado)
 
 
 # -------------------Fun. SECUNDARIA posibles errores validación:
     def validacion_gral(self, opcion):
+
         if opcion == 2 or opcion == 3:
             self.apartado_visual_v.help_mail(self.txt_email, opcion)
+            return
         elif opcion == 4 or opcion == 5 or opcion == 6:
             self.apartado_visual_v.help_edad(self.txt_edad, opcion)
+            return
         else:
             self.apartado_visual_v.help_campos_vacios(opcion[1], self.txt_nombre, self.txt_edad,
                                                       self.txt_email, self.txt_provincia, self.txt_int_voto)
+

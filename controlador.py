@@ -6,9 +6,9 @@ from os import system
 system("cls")
 
 
-class Controlador():
+class Controlador:
     def __init__(self, root):
-        self.controlador_root= root
+        self.controlador_root = root
         self.objeto_ventana = Ventana(self.controlador_root)
         self.observador_alta = observador.Observador_Alta(self.objeto_ventana.objeto_base)
         self.observador_mod = observador.Observador_Modif(self.objeto_ventana.objeto_base)
@@ -22,7 +22,7 @@ if __name__ == '__main__':
 
 
 #1
-"Hacer aleatorio el orden de los candidatos " # OK!
+"Hacer aleatorio el orden de los candidatos"
 
 #2
 "Tratar de pasar la parte grafica del boton_Graficar a otro scrip mas adecuado"

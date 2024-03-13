@@ -1,11 +1,18 @@
-from peewee import *
+from peewee import SqliteDatabase, Model, AutoField, CharField, IntegrityError
+from pathlib import Path
 
-ruta_db_acc_obs = 'bases_de_datos/db_pton_obs.db'
+
+ruta_db_acc_obs = Path('bases_de_datos/db_pton_obs.db')
+
 db_acc_obs = SqliteDatabase(ruta_db_acc_obs)
+db_acc_obs.connect()
+
 
 class BaseModel(Model):
+
     class Meta:
         database = db_acc_obs
+
 
 class Modif_Observer(BaseModel):
 
@@ -17,13 +24,8 @@ class Modif_Observer(BaseModel):
     fecha = CharField()
     hora = CharField()
 
-db_acc_obs.connect()
-db_acc_obs.create_tables([Modif_Observer])
 
-
-######################################################################
-
-######################################################################
+db_acc_obs.create_tables([Modif_Observer], safe=True)
 
 
 class Subject:
@@ -53,14 +55,17 @@ class Subject:
 
         with db_acc_obs.atomic():
             try:
-                mod_obs = Modif_Observer()
-                mod_obs.observador = f"OBS - {args[0]}"
-                mod_obs.accion = args[0]
-                mod_obs.nombre = args[1]
-                mod_obs.email = args[2]
-                mod_obs.fecha = args[3]
-                mod_obs.hora = args[4]
-                mod_obs.save()
+                #mod_obs = Modif_Observer.create(
+                Modif_Observer.create(
+                    observador = f"OBS - {args[0]}",
+                    accion = args[0],
+                    nombre = args[1],
+                    email = args[2],
+                    fecha = args[3],
+                    hora = args[4],
+                )
+
+                #mod_obs.save()
             except Exception as e:
                 print(e)
 
@@ -69,6 +74,7 @@ class Observador:
 
     def update(self,):
         raise NotImplementedError("Delegación de actualización")
+
 
 class Observador_Alta(Observador):
 
@@ -90,6 +96,7 @@ class Observador_Alta(Observador):
         mod_obs.hora = self.argumentos[4]
         mod_obs.save()"""
 
+
 class Observador_Modif(Observador):
 
     def __init__(self, objeto):
@@ -109,6 +116,7 @@ class Observador_Modif(Observador):
         mod_obs.fecha = args[0][3]
         mod_obs.hora = args[0][4]
         mod_obs.save()"""
+
 
 class Observador_Baja(Observador):
 
