@@ -5,6 +5,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from tkinter import StringVar
 from pathlib import Path
 
+from visual.clases_vista import *
 
 from modelo import *
 from visual.parametros_gui  import *
@@ -42,9 +43,13 @@ class Ventana(Frame):
         frame1 = Frame(self,  bg='#bfdaff')
         frame1.place(x=0, y=0, width=95, height=299)
 
-        self.btn_nuevo = Button(frame1, text="Nuevo", command=lambda:self.fun_nuevo(),
+        """self.btn_nuevo = Button(frame1, text="Nuevo", command=lambda:self.fun_nuevo(),
                                 bg=b1_bg, fg=b_fg, cursor=b_csor, font=b_font)
+        self.btn_nuevo.place(x=8, y=65, width=b1_width, height=b1_height)"""
+        self.btn_nuevo = BotonGenerico(frame1, text="Nuevo", command=lambda:self.fun_nuevo(),
+                                       config_type='tipo1')
         self.btn_nuevo.place(x=8, y=65, width=b1_width, height=b1_height)
+
 
         self.btn_modificar = Button(frame1, text="Modificar", command=lambda:self.fun_modificar(),
                                     bg=b1_bg, fg=b_fg, cursor=b_csor, font=b_font)
@@ -163,7 +168,7 @@ class Ventana(Frame):
         self.txt_nombre.focus()
 
 
-    def fun_modificar(self):
+    def fun_modificar(self,):
 
         self.apartado_visual_v.ord_aleatorio_candidatos(self.txt_int_voto)
         seleccionado = self.my_tree.focus()
@@ -183,12 +188,12 @@ class Ventana(Frame):
             self.habilitar_btn_guardar_cancelar("normal")
 
 
-    def fun_eliminar(self):
+    def fun_eliminar(self,):
 
         self.objeto_base.baja(self.my_tree)
 
 
-    def fun_guardar(self):
+    def fun_guardar(self,):
 
         if self.id == -1:
             code = self.objeto_base.alta(self.nombre, self.edad, self.email, self.provincia, self.int_voto, self.my_tree)
@@ -210,7 +215,7 @@ class Ventana(Frame):
             self.validacion_gral(code)
 
 
-    def fun_cancelar(self):
+    def fun_cancelar(self,):
 
         respuesta = messagebox.askquestion("Cancelar", "Esta seguro que desea cancelar la operación actual?")
         if respuesta == messagebox.YES:
@@ -222,7 +227,7 @@ class Ventana(Frame):
 
 
     # --------------- Botones Gráfico y Encuesta ---------------------------------------
-    def fun_btn_encuestar(self):
+    def fun_btn_encuestar(self,):
 
         self.my_tree.place(x=0, y=0, width=683, height=299)
         plt.close("all")
