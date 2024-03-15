@@ -21,6 +21,7 @@ if __name__ == '__main__':
     root.mainloop()
 
 
+
 #1
 "Hacer aleatorio el orden de los candidatos"
 
