@@ -1,5 +1,5 @@
-from tkinter import Button, Label
-
+from tkinter import Button, Label, Frame, Entry
+from tkinter.ttk import Combobox
 
 class BotonGenerico(Button):
 
@@ -33,10 +33,6 @@ class BotonGenerico(Button):
         if config_geo in self.geometria:
             self.place(x=x, y=y, **self.geometria[config_geo])
 
-    #def place_button(self, x, y, config_geometria='geometria_t1'):
-
-        #if config_geometria in self.geometria:
-         #   self.place(x=x, y=y, **self.geometria[config_geometria])
 
 #------------------------------------------------------------------------------------------------------
 
@@ -51,3 +47,68 @@ class LabelGenerico(Label):
         super().__init__(master, text=text, **config)
 
         self.place(x=x, y=y)
+
+
+class FrameGenerico(Frame):
+
+    config_comun = {
+        #En caso de necesitar!!
+    }
+
+    def __init__(self, x, y, widht, heigth, bg, master=None, config=config_comun, **kwargs):
+        super().__init__(master, bg=bg, **config)
+
+        self.place(x=x, y=y, width=widht, height=heigth)
+
+
+
+class EntryGenerico(Entry):
+
+    config_comun = {
+        'font': "MONOSPACE 10"
+    }
+
+    def __init__(self, x, y, widht, heigth, textvariable, master=None, config=config_comun, **kwargs):
+        super().__init__(master, textvariable=textvariable, **config)
+
+        self.place(x=x, y=y, width=widht, height=heigth)
+
+
+
+class ComboBoxGenerico(Combobox):
+    lista_candidatos = ["", "Voto en Blanco", "La libertad no avanza", "Por unión la patria",
+                       "La SINiestra", "Juntos sin el cambio"]
+
+    lista_provincias = ["","Buenos Aires", "CABA", "Catamarca", "Chaco", "Chubut", "Córdoba", "Corrientes", "Entre Ríos",
+                        "Formosa", "Jujuy", "La Pampa", "La Rioja", "Mendoza", "Misiones", "Neuquén", "Río Negro", "Salta",
+                        "San Juan", "San Luis", "Santa Cruz", "Santa Fe", "Santiago del Estero",
+                        "Tierra del Fuego, Antártida e Islas del Atlántico Sur",
+                        "Tucumán"]
+
+    opc_lista = {
+        'lista_candidatos': lista_candidatos,
+        'lista_provincias': lista_provincias
+    }
+
+    config_comun = {
+        'width': 18,
+        'state': 'reandonly',
+        'font': 'MONOSPACE 10',
+    }
+
+
+    def __init__(self, x, y, widht, heigth, textvariable, master=None, config_lista="", **kwargs):
+        super().__init__(master, textvariable=textvariable, **kwargs)
+
+        self.configure(**self.config_comun)
+
+
+        if config_lista in self.opc_lista:
+            self.config(values = self.opc_lista[config_lista])
+
+        self.current(0)
+
+        self.place(x=x, y=y, width=widht, height=heigth)
+
+
+    pass

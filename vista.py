@@ -1,4 +1,4 @@
-from tkinter import Frame, Label, Entry, Scrollbar, PhotoImage, messagebox
+from tkinter import Frame, Entry, Scrollbar, PhotoImage, messagebox
 from tkinter.ttk import Combobox, Treeview, Style
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
@@ -40,73 +40,76 @@ class Ventana(Frame):
     def crear_widgets(self):
 
         #--------------->     1er Frame     <---------------------------------
-        frame1 = Frame(self,  bg='#bfdaff')
-        frame1.place(x=0, y=0, width=95, height=299)
+        frame1 = FrameGenerico(0, 0, 95, 299, '#bfdaff')
+
 
         self.btn_nuevo = BotonGenerico(8, 65, frame1, text="Nuevo", command=lambda:self.fun_nuevo(),
                                        config_type='tipo1', config_geo="geometria_t1")
-        #self.btn_nuevo.place_button(x=8, y=65, config_geometria="geometria_t1")
 
         self.btn_modificar = BotonGenerico(8, 105, frame1, text="Modificar", command=lambda:self.fun_modificar(),
                                            config_type='tipo1', config_geo="geometria_t1")
-        #self.btn_modificar.place_button(x=8, y=105, config_geometria="geometria_t1")
 
         self.btn_eliminar = BotonGenerico(8, 145, frame1, text="Eliminar", command=lambda:self.fun_eliminar(),
                                             config_type='tipo1', config_geo="geometria_t1")
-        #self.btn_eliminar.place_button(x=8, y=145, config_geometria="geometria_t1")
 
 
         #--------------->     2do Frame     <---------------------------------
-        frame2 = Frame(self, bg='#ADBACC')  #d3dde3
-        frame2.place(x=98, y=0, width=169, height=299)
+        frame2 = FrameGenerico(98, 0, 169, 299, '#ADBACC')
 
 
-        lbl1_nombre = LabelGenerico(10, 5, frame2, "Nombre: ")
+        LabelGenerico(10, 5, frame2, "Nombre: ")
 
-        lbl2_edad = LabelGenerico(10, 55, frame2, "Edad: ")
+        LabelGenerico(10, 55, frame2, "Edad: ")
 
-        lbl3_email = LabelGenerico(10, 105, frame2, "Email: ")
+        LabelGenerico(10, 105, frame2, "Email: ")
 
-        lbl4_provincia = LabelGenerico(10, 155, frame2, "Provincia: ")
+        LabelGenerico(10, 155, frame2, "Provincia: ")
 
-        lbl5_int_voto = LabelGenerico(10,205, frame2, "Intención de voto: ")
-        
-        
-        self.txt_nombre = Entry(frame2, textvariable=self.nombre, font= e_font)
-        self.txt_nombre.place(x=10, y=26, width=150, height=20)
+        LabelGenerico(10,205, frame2, "Intención de voto: ")
 
 
-        self.txt_edad = Entry(frame2, textvariable=self.edad, font=e_font)
-        self.txt_edad.place(x=10, y=76, width=65, height=20)
+        #self.txt_nombre = Entry(frame2, textvariable=self.nombre, font= e_font)
+        #self.txt_nombre.place(x=10, y=26, width=150, height=20)
+        self.txt_nombre = EntryGenerico(10, 26, 150, 20, self.nombre, frame2)
 
 
-        self.txt_email = Entry(frame2, textvariable=self.email, font= e_font)
-        self.txt_email.place(x=10, y=126, width=150, height=20)
+        #self.txt_edad = Entry(frame2, textvariable=self.edad, font=e_font)
+        #self.txt_edad.place(x=10, y=76, width=65, height=20)
+        self.txt_edad = EntryGenerico(10, 76, 65, 20, self.edad, frame2)
 
 
-        self.provincias = list_provincias
-        self.txt_provincia = Combobox(frame2, textvariable=self.provincia, width=18, values=self.provincias, state="readonly", font= e_font)
-        self.txt_provincia.current(0)
-        self.txt_provincia.place(x=10, y=176, width=135, height=20)
+
+        #self.txt_email = Entry(frame2, textvariable=self.email, font= e_font)
+        #self.txt_email.place(x=10, y=126, width=150, height=20)
+        self.txt_email = EntryGenerico(10, 126, 150, 20, self.email, frame2)
 
 
-        self.opciones_votos = list_candidatos
-        self.txt_int_voto = Combobox(frame2, textvariable=self.int_voto, width=18, values=self.opciones_votos, state="readonly", font= e_font)
-        self.txt_int_voto.current(0)
-        self.txt_int_voto.place(x=10, y=226, width=135, height=20)
+
+        #self.provincias = list_provincias
+        #self.txt_provincia = Combobox(frame2, textvariable=self.provincia, width=18, values=self.provincias, state="readonly", font= e_font)
+        #self.txt_provincia.current(0)
+        #self.txt_provincia.place(x=10, y=176, width=135, height=20)
+        self.txt_provincia = ComboBoxGenerico(10, 176, 135, 20, self.provincia, frame2, "lista_provincias")
+
+
+        #self.opciones_votos = list_candidatos
+        #self.txt_int_voto = Combobox(frame2, textvariable=self.int_voto, width=18, values=self.opciones_votos, state="readonly", font= e_font)
+        #self.txt_int_voto.current(0)
+        #self.txt_int_voto.place(x=10, y=226, width=135, height=20)
+        self.txt_int_voto= ComboBoxGenerico(10, 226, 135, 20, self.int_voto, frame2, "lista_candidatos")
+
 
 
         self.btn_guardar = BotonGenerico(13, 260, frame2, text="Guardar", command=lambda:self.fun_guardar(),
                                          config_type='tipo2', config_geo="geometria_t2", bg='green')
-        #self.btn_guardar.place_button(x=13, y=260, config_geometria="geometria_t2")
 
         self.btn_cancelar = BotonGenerico(92, 260, frame2, text="Cancelar", command=lambda:self.fun_cancelar(),
                                           config_type='tipo2', config_geo="geometria_t2", bg='red')
-        #self.btn_cancelar.place_button(x=92, y=260, config_geometria="geometria_t2")
+
 
         #--------------->     3er Frame     <---------------------------------
-        frame3 = Frame(self, bg='yellow')
-        frame3.place(x=388, y=0, width=700, height=299)
+        frame3 = FrameGenerico(388, 0, 700, 299, 'yellow')
+
 
         #--------------->     TREEVIEW     <---------------------------------
         self.my_tree = Treeview(frame3, columns=('col1', 'col2', 'col3', 'col4', 'col5'))
@@ -134,6 +137,8 @@ class Ventana(Frame):
 
         self.my_tree.place(x=0, y=0, width=683, height=299)
 
+
+        #----------------------------------------- Scrollbar
         sb = Scrollbar(frame3, orient="vertical")
         sb.pack(side="right", fill="y")
         self.my_tree.config(yscrollcommand=sb.set)
@@ -142,8 +147,8 @@ class Ventana(Frame):
 
 
         #--------------->     4th Frame     <---------------------------------
-        frame4 = Frame(self, bg="#637A99")
-        frame4.place(x=270, y=0, width=115, height=299)
+        frame4 = FrameGenerico(270, 0, 115, 299, "#637A99")
+
 
         self.ruta_img_enc = Path("visual/1.encuestar_img.png")
         self.img_btn_enc = PhotoImage(file=self.ruta_img_enc)
@@ -153,11 +158,11 @@ class Ventana(Frame):
 
         self.btn_encuestar = BotonGenerico(11, 45, frame4, command=lambda:self.fun_btn_encuestar(),
                                            config_type='tipo3', config_geo="geometria_t3", image= self.img_btn_enc)
-        #self.btn_encuestar.place_button(x=11, y=45, config_geometria="geometria_t3")
 
         self.btn_graficar = BotonGenerico(11, 170, frame4, command=lambda:self.fun_btn_graficar(frame3),
                                           config_type='tipo3', config_geo="geometria_t3", image= self.img_btn_graficar)
-        #self.btn_graficar.place_button(x=11, y=170, config_geometria="geometria_t3")
+
+
 
     # ---------FUNCIONES PRINCIPALES!------------------
     def fun_nuevo(self,):
