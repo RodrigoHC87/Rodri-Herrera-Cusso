@@ -43,21 +43,17 @@ class Ventana(Frame):
         frame1 = Frame(self,  bg='#bfdaff')
         frame1.place(x=0, y=0, width=95, height=299)
 
-        """self.btn_nuevo = Button(frame1, text="Nuevo", command=lambda:self.fun_nuevo(),
-                                bg=b1_bg, fg=b_fg, cursor=b_csor, font=b_font)
-        self.btn_nuevo.place(x=8, y=65, width=b1_width, height=b1_height)"""
         self.btn_nuevo = BotonGenerico(frame1, text="Nuevo", command=lambda:self.fun_nuevo(),
                                        config_type='tipo1')
-        self.btn_nuevo.place(x=8, y=65, width=b1_width, height=b1_height)
+        self.btn_nuevo.place_button(x=8, y=65, config_geometria="geometria_t1")
 
+        self.btn_modificar = BotonGenerico(frame1, text="Modificar", command=lambda:self.fun_modificar(),
+                                           config_type='tipo1')
+        self.btn_modificar.place_button(x=8, y=105, config_geometria="geometria_t1")
 
-        self.btn_modificar = Button(frame1, text="Modificar", command=lambda:self.fun_modificar(),
-                                    bg=b1_bg, fg=b_fg, cursor=b_csor, font=b_font)
-        self.btn_modificar.place(x=8, y=105, width=b1_width, height=b1_height)
-
-        self.btn_eliminar = Button(frame1, text="Eliminar", command=lambda:self.fun_eliminar(),
-                                   bg=b1_bg, fg=b_fg, cursor=b_csor, font=b_font)
-        self.btn_eliminar.place(x=8, y=145, width=b1_width, height=b1_height)
+        self.btn_eliminar = BotonGenerico(frame1, text="Eliminar", command=lambda:self.fun_eliminar(),
+                                          config_type='tipo1')
+        self.btn_eliminar.place_button(x=8, y=145, config_geometria="geometria_t1")
 
 
         #--------------->     2do Frame     <---------------------------------
@@ -93,14 +89,14 @@ class Ventana(Frame):
         self.txt_int_voto.current(0)
         self.txt_int_voto.place(x=10, y=226, width=135, height=20)
 
-        self.btn_guardar = Button(frame2, text="Guardar", command=lambda:self.fun_guardar(),
-                                  bg='green', fg=b_fg, cursor=b_csor, font=b2_font)
-        self.btn_guardar.place(x=13, y=260, width=b2_width, height=b2_height)
 
-        self.btn_cancelar = Button(frame2, text="Cancelar", command=lambda:self.fun_cancelar(),
-                                   bg='red', fg=b_fg, cursor=b_csor, font=b2_font)
-        self.btn_cancelar.place(x=92, y=260, width=b2_width, height=b2_height)
+        self.btn_guardar = BotonGenerico(frame2, text="Guardar", command=lambda:self.fun_guardar(),
+                                          config_type='tipo2', bg='green')
+        self.btn_guardar.place_button(x=13, y=260, config_geometria="geometria_t2")
 
+        self.btn_cancelar = BotonGenerico(frame2, text="Cancelar", command=lambda:self.fun_cancelar(),
+                                          config_type='tipo2', bg='red')
+        self.btn_cancelar.place_button(x=92, y=260, config_geometria="geometria_t2")
 
         #--------------->     3rd Frame     <---------------------------------
         frame3 = Frame(self, bg='yellow')
@@ -115,6 +111,13 @@ class Ventana(Frame):
         # Personalizar el estilo al heading:
         self.estilo.configure("Treeview.Heading", font=("MONOSPACE", 11))
 
+        self.my_tree.heading('#0', text='ID', anchor="center")
+        self.my_tree.heading('col1', text='Nombre', anchor="center")
+        self.my_tree.heading('col2', text='Edad', anchor="center")
+        self.my_tree.heading('col3', text='Email', anchor="center")
+        self.my_tree.heading('col4', text='Provincia', anchor="center")
+        self.my_tree.heading('col5', text='Int. de voto', anchor="center")
+
         self.my_tree.column('#0', width=50)
         self.my_tree.column('col1', width=140, anchor="center")
         self.my_tree.column('col2', width=65, anchor="center")
@@ -122,12 +125,6 @@ class Ventana(Frame):
         self.my_tree.column('col4', width=115, anchor="center")
         self.my_tree.column('col5', width=125, anchor="center")
 
-        self.my_tree.heading('#0', text='ID', anchor="center")
-        self.my_tree.heading('col1', text='Nombre', anchor="center")
-        self.my_tree.heading('col2', text='Edad', anchor="center")
-        self.my_tree.heading('col3', text='Email', anchor="center")
-        self.my_tree.heading('col4', text='Provincia', anchor="center")
-        self.my_tree.heading('col5', text='Int. de voto', anchor="center")
 
         self.my_tree.place(x=0, y=0, width=683, height=299)
 
@@ -148,14 +145,13 @@ class Ventana(Frame):
         self.ruta_img_graf = Path("visual/2.img_graficar.png")
         self.img_btn_graficar = PhotoImage(file=self.ruta_img_graf)
 
-        self.btn_encuestar = Button(frame4, command=lambda:self.fun_btn_encuestar(),
-                                    image=self.img_btn_enc, border=0, cursor=b_csor)
-        self.btn_encuestar.place(x=11, y=45, width=95, height=95)
+        self.btn_encuestar = BotonGenerico(frame4, command=lambda:self.fun_btn_encuestar(),
+                                           config_type='tipo3', image= self.img_btn_enc)
+        self.btn_encuestar.place_button(x=11, y=45, config_geometria="geometria_t3")
 
-        self.btn_graficar = Button(frame4, command=lambda:self.fun_btn_graficar(frame3),
-                                    image=self.img_btn_graficar, border=0, cursor=b_csor)
-        self.btn_graficar.place(x=11, y=170, width=95, height=95)
-
+        self.btn_graficar = BotonGenerico(frame4, command=lambda:self.fun_btn_graficar(frame3),
+                                           config_type='tipo3', image= self.img_btn_graficar)
+        self.btn_graficar.place_button(x=11, y=170, config_geometria="geometria_t3")
 
     # ---------FUNCIONES PRINCIPALES!------------------
     def fun_nuevo(self,):

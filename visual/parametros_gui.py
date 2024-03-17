@@ -1,22 +1,5 @@
 import os
 
-
-# Parametros generales de los Botones:
-
-b_csor = "hand2"
-b_font = "MONOSPACE 10 bold"
-b_fg = '#FFFFFF'
-
-    # botones del 1er frame
-b1_bg = '#0761F7'
-b1_width = 80
-b1_height = 30
-
-    # botones del 2do frame
-b2_font = "MONOSPACE 9 bold"
-b2_width = 65
-b2_height = 30
-
 # Parametros de los Labels:
 l_bg = '#ADBACC'
 l_font = "MONOSPACE 11 bold"
