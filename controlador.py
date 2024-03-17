@@ -22,19 +22,16 @@ if __name__ == '__main__':
 
 
 
-#1
-"Hacer aleatorio el orden de los candidatos"
-
-#2
-"Tratar de pasar la parte grafica del boton_Graficar a otro scrip mas adecuado"
-
 #3
 "Hacer personalizable la app (colores, idioma(?, fuente) Guardar esta nueva info en una nueva DDBB"
 'Agregar la info de los frames(color, y cualquier cosa que puede ser util ) en "parametros_gui"'
-"Hacer 3 variables de colores(jugar con la armonia de los colores) ver como seria el 'tema oscuro'"
+"Hacer 3 variables de colores(jugar con la armonía de los colores) ver como seria el 'tema oscuro'"
 
 #4
 "Implementar un nuevo 'menu opciones' con 1.personalizacion, 2.idioma"
 
 #5
-"Opciones de graficos de barra segun la 'edad' y 'genero' -(Agregar este apartado a todo el sistema)"
+"Opciones de graficos de barra segun la 'edad' y 'género' -(Agregar este apartado a todo el sistema)"
+
+#1
+'Crear un filtro de, fechas, edades, provincias e integrarlo a todo el sistema'

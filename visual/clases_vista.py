@@ -1,4 +1,5 @@
-from tkinter import Button
+from tkinter import Button, Label
+
 
 class BotonGenerico(Button):
 
@@ -21,7 +22,7 @@ class BotonGenerico(Button):
     }
 
 
-    def __init__(self, master=None, text="", command=None, config_type="tipo1", **kwargs):
+    def __init__(self, x, y, master=None, text="", command=None, config_type="", config_geo="",  **kwargs):
         super().__init__(master, text=text, command=command, **kwargs)
 
         self.config(**self.config_comun)
@@ -29,9 +30,24 @@ class BotonGenerico(Button):
         if config_type in self.config_esp:
             self.config(**self.config_esp[config_type])
 
+        if config_geo in self.geometria:
+            self.place(x=x, y=y, **self.geometria[config_geo])
 
-    def place_button(self, x, y, config_geometria='geometria_t1', **kwargs):
+    #def place_button(self, x, y, config_geometria='geometria_t1'):
 
-        if config_geometria in self.geometria:
-            self.place(x=x, y=y, **self.geometria[config_geometria])
+        #if config_geometria in self.geometria:
+         #   self.place(x=x, y=y, **self.geometria[config_geometria])
 
+#------------------------------------------------------------------------------------------------------
+
+class LabelGenerico(Label):
+
+    config_comun ={
+        'bg': '#ADBACC',
+        'font': 'MONOSPACE 11 bold'
+    }
+
+    def __init__(self, x, y, master=None, text="", config=config_comun, **kwargs):
+        super().__init__(master, text=text, **config)
+
+        self.place(x=x, y=y)
