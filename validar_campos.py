@@ -5,40 +5,88 @@ class ValidarDatos:
     # ---------------------------------Fun. validar campos:
     def validar_campos(self, nombre, edad, email, provincia, voto):
         error_validacion = 0
-        patron_edad = r"^[0-9]{1,3}$"
-        patron_mail = r"^[a-zA-Z0-9._%+*#-]+@[a-zA-Z0-9.-]+\.com$"
+        campos = [nombre.get(), edad.get(), email.get(), provincia.get(), voto.get()]
 
-        if nombre.get() == "" or email.get() == "" or edad.get() == "" or provincia.get() == "" or voto.get() == "":
+        # Verificar campos vacíos
+        if "" in campos:
             messagebox.showinfo("Validación", "Todos los campos son requeridos!")
             error_validacion = 1
-            lista = [nombre.get(), edad.get(), email.get(), provincia.get(), voto.get()]
-            ind_entry_faltante = 0
-            for entry in lista:
-                ind_entry_faltante += 1
-                if entry == "":
-                    return (error_validacion, ind_entry_faltante)
+            campo_faltante = campos.index("") + 1
+            return error_validacion, campo_faltante
 
-        if re.match(patron_mail, email.get()) == None:
+        # Verificar formato de correo electrónico
+        patron_mail = r"^[a-zA-Z0-9._%+*#-]+@[a-zA-Z0-9.-]+\.com$"
+        if not re.match(patron_mail, email.get()):
             error_validacion = 2
             messagebox.showerror("Validación", 'Formato de correo no valido!')
             return error_validacion
 
-        if re.match(patron_edad, edad.get()) == None:
+        # Verificar formato y rango de la edad
+        patron_edad = r"^\d{1,3}$"
+        if not re.match(patron_edad, edad.get()):
             messagebox.showerror("Validación", "         Edad incorrecta!         ")
             error_validacion = 4
             return error_validacion
 
-        if re.match(patron_edad, edad.get()):
-            edad_int = int(edad.get())
-            if edad_int > 105 or edad_int < 16:
-                if edad_int < 16:
-                    messagebox.showerror("Validación", 'La persona encuestada debe ser mayor!')
-                    error_validacion = 5
-                elif edad_int > 105:
-                    messagebox.showerror("Validación", 'No podés tener más años qué Mirtha!')
-                    error_validacion = 6
+        edad_int = int(edad.get())
+        if edad_int > 105 or edad_int < 16:
+            if edad_int < 16:
+                messagebox.showerror("Validación", 'La persona encuestada debe ser mayor!')
+                error_validacion = 5
+            elif edad_int > 105:
+                messagebox.showerror("Validación", 'La persona encuestada no puede\ntener más años qué Mirtha!')
+                error_validacion = 6
+        return error_validacion
+
+
+
+
+
+
+
+
+
+
+# MIRAR ESTAS MEJORAS!
+"""
+import re
+from tkinter import messagebox
+
+class ValidarDatos:
+    def validar_campos(self, nombre, edad, email, provincia, voto):
+        error_validacion = 0
+        campos = [nombre.get(), edad.get(), email.get(), provincia.get(), voto.get()]
+
+        # Verificar campos vacíos
+        if "" in campos:
+            messagebox.showinfo("Validación", "Todos los campos son requeridos!")
+            error_validacion = 1
+            ind_entry_faltante = campos.index("") + 1
+            return (error_validacion, ind_entry_faltante)
+
+        # Verificar formato de correo electrónico
+        patron_mail = r"^[a-zA-Z0-9._%+*#-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+        if not re.match(patron_mail, email.get()):
+            error_validacion = 2
+            messagebox.showerror("Validación", 'Formato de correo no válido!')
             return error_validacion
 
-        else:
+        # Verificar formato y rango de la edad
+        patron_edad = r"^\d{1,3}$"
+        if not re.match(patron_edad, edad.get()):
+            messagebox.showerror("Validación", "Edad incorrecta!")
+            error_validacion = 4
             return error_validacion
 
+        edad_int = int(edad.get())
+        if edad_int > 105 or edad_int < 16:
+            if edad_int < 16:
+                messagebox.showerror("Validación", 'La persona encuestada debe ser mayor!')
+                error_validacion = 5
+            elif edad_int > 105:
+                messagebox.showerror("Validación", 'No puedes tener más años que Mirtha!')
+                error_validacion = 6
+
+        return error_validacion
+
+"""

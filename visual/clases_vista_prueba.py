@@ -2,6 +2,8 @@ import tkinter as tk
 
 from tkinter import Button
 
+
+
 class BotonPersonalizado(Button):
     CONFIG_COMUN = {
         'bg': '#bfdaff',

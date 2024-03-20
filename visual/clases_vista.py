@@ -18,7 +18,8 @@ class BotonGenerico(Button):
     geometria = {
         "geometria_t1": {'width': 80, 'height': 30},
         "geometria_t2": {'width': 65, 'height': 30},
-        "geometria_t3": {'width': 95, 'height': 95}
+        "geometria_t3": {'width': 95, 'height': 95},
+        "geometria_t4": {'width': 55, 'height': 25},
     }
 
 
@@ -38,13 +39,16 @@ class BotonGenerico(Button):
 
 class LabelGenerico(Label):
 
-    config_comun ={
-        'bg': '#ADBACC',
-        'font': 'MONOSPACE 11 bold'
+    config_esp ={
+        'tipo1': {'bg': 'red', 'font': 'MONOSPACE 10 bold', 'fg':'white'},
+        'tipo2': {'bg': '#ADBACC', 'font': 'MONOSPACE 11 bold', 'fg':'black'},
     }
 
-    def __init__(self, x, y, master=None, text="", config=config_comun, **kwargs):
-        super().__init__(master, text=text, **config)
+    def __init__(self, x, y, master=None, text="", config="", **kwargs):
+        super().__init__(master, text=text, **kwargs)
+
+        if config in self.config_esp:
+            self.config(**self.config_esp[config])
 
         self.place(x=x, y=y)
 
