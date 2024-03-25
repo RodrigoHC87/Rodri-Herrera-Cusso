@@ -22,6 +22,8 @@ if __name__ == '__main__':
 
 
 
+"Cambiar el nombre de las clases por mi_class ---- ejemp mi_combobox, mi_boton"
+
 #3
 "Hacer personalizable la app (colores, idioma(?, fuente) Guardar esta nueva info en una nueva DDBB"
 'Agregar la info de los frames(color, y cualquier cosa que puede ser util ) en "parametros_gui"'

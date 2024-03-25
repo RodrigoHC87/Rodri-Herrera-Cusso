@@ -25,6 +25,11 @@ class Ventana(Frame):
         self.email = StringVar()
         self.provincia = StringVar()
         self.int_voto = StringVar()
+        self.filtro_regiones = StringVar()
+        self.filtro_provincias = StringVar()
+        self.filtro_edad = StringVar()
+
+
         self.id = -1
 
         self.objeto_base = Abmc()
@@ -37,18 +42,49 @@ class Ventana(Frame):
 
 
     #--------------------- WIDGETS ------------------------
-    def crear_widgets(self):
+    def crear_widgets(self,):
 
 
-        #--------------->     0ro Frame     <---------------------------------
-        frame0 = FrameGenerico(0, 0, 1090, 35, 'red')
+        #--------------->    Frame superior '0'    <---------------------------------
+        frame_sup = FrameGenerico(0, 0, 1090, 35, 'black')
 
-        LabelGenerico(8, 6, frame0, "FILTRAR por: ", 'tipo1')
-
-        self.txt_int_voto= ComboBoxGenerico(180, 6, 140, 25, self.int_voto, frame0, "lista_candidatos")
-
-        self.btn_nuevo3 = BotonGenerico(340, 6, frame0, text="aplicar", command=lambda:self.probando(),
+        self.btn_nuevo3 = BotonGenerico(1000, 6, frame_sup, text="aplicar", command=lambda:self.fun_aplicar_Filtros(),
                                        config_type='tipo1', config_geo="geometria_t4")
+
+
+        #--------------->     frame_0  // master -> frame_sup
+        frame_0 = FrameGenerico(0, 0, 120, 35, 'red' , frame_sup)
+
+        LabelGenerico(60, 0, frame_0, "FILTRAR por: ", 'tipo1')
+
+
+        #--------------->     frame_0.1  // master -> frame_sup
+        frame_0_1 = FrameGenerico(123, 0, 193, 35, 'lightblue', frame_sup)
+
+        LabelGenerico(10, 0, frame_0_1, "Provincia: ", 'tipo0')
+
+        self.filtro_prov = ComboBoxGenerico(80, 0, 100, 20, self.filtro_provincias, frame_0_1,
+                                            'tipo2', "lista_provincias")
+
+
+        #--------------->     frame_0.2  // master -> frame_sup
+        frame_0_2 = FrameGenerico(319, 0, 193, 35, 'grey', frame_sup)
+
+        LabelGenerico(10, 0, frame_0_2, "   Región: ", 'tipo0')
+
+        self.filtro_reg = ComboBoxGenerico(80, 0, 100, 20, self.filtro_regiones, frame_0_2,
+                                            'tipo2', "lista_regiones")
+
+
+        #--------------->     frame_0.3  // master -> frame_sup
+        frame_0_3 = FrameGenerico(515, 0, 193, 35, 'lightgreen', frame_sup)
+
+        LabelGenerico(10, 0, frame_0_3, "Edad: ", 'tipo0')
+
+
+        self.filtro_edad = ComboBoxGenerico(80, 0, 60, 20, self.filtro_edad, frame_0_3,
+                                            'tipo2', "lista_edad")
+
 
 
 
@@ -87,9 +123,11 @@ class Ventana(Frame):
 
         self.txt_email = EntryGenerico(10, 126, 150, 20, self.email, frame2)
 
-        self.txt_provincia = ComboBoxGenerico(10, 176, 135, 20, self.provincia, frame2, "lista_provincias")
+        self.txt_provincia = ComboBoxGenerico(10, 176, 135, 20, self.provincia, frame2,
+                                              "tipo1", "lista_provincias")
 
-        self.txt_int_voto= ComboBoxGenerico(10, 226, 135, 20, self.int_voto, frame2, "lista_candidatos")
+        self.txt_int_voto= ComboBoxGenerico(10, 226, 135, 20, self.int_voto, frame2,
+                                            "tipo1", "lista_candidatos")
 
 
         self.btn_guardar = BotonGenerico(13, 260, frame2, text="Guardar", command=lambda:self.fun_guardar(),
@@ -303,7 +341,9 @@ class Ventana(Frame):
 
 
 
-
 #-------------------------------------------------nuevoo
-    def probando(self):
-        print("boton ok, frame0")
+    def fun_aplicar_Filtros(self,):
+        print("fun_aplicar:")
+        print(self.filtro_edad.get(), self.filtro_provincias.get(), self.filtro_regiones.get())
+        print("FIN --- fun_aplicar:")
+        votos_grafico1 = self.objeto_base.conteo_por_filtro(self.filtro_prov, self.filtro_reg, self.filtro_edad)

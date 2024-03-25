@@ -139,8 +139,6 @@ class Abmc(Subject):
                 return code
 
 
-
-
 # ----------------------------------Fun. actualizar treevieew
     def actualizar_treeview(self, my_tree):
         #limpieza de tabla
@@ -153,34 +151,6 @@ class Abmc(Subject):
 
 
 # ----------------------------------Fun. conteo_de_votos:
-    """def conteo_de_votos(self):
-
-        votos_grafico = []
-
-        conteo_blancos = 0
-        conteo_juntos = 0
-        conteo_union = 0
-        conteo_siniestra = 0
-        conteo_libertad = 0
-
-        for encuestas in Encuestaa.select():
-            if encuestas.voto == "Voto en Blanco":
-                conteo_blancos += 1
-            elif encuestas.voto == "La libertad no avanza":
-                conteo_libertad += 1
-            elif encuestas.voto == "Por unión la patria":
-                conteo_union += 1
-            elif encuestas.voto == "La SINiestra":
-                conteo_siniestra += 1
-            elif encuestas.voto == "Juntos sin el cambio":
-                conteo_juntos += 1
-
-        votos_grafico.extend([conteo_blancos, conteo_juntos, conteo_siniestra,
-                              conteo_libertad, conteo_union])
-        print("votos: ", votos_grafico)
-        return votos_grafico"""
-
-
     def conteo_de_votos(self):
 
         conteos = {
@@ -200,6 +170,67 @@ class Abmc(Subject):
         print("votos: ", votos_grafico)
         return votos_grafico
 
+
+
+# ------------------------------------------------------------NUEVO!!
+    def conteo_por_filtro(self, prov, regiones, edad):
+
+        conteos1 = {
+            "Voto en Blanco": 0,
+            "Juntos sin el cambio": 0,
+            "La SINiestra": 0,
+            "La libertad no avanza": 0,
+            "Por unión la patria": 0
+        }
+
+        conj_de_prov = {
+            'Noroeste': {"Jujuy", "Salta", "Tucumán", "Santiago del Estero", "Catamarca", "La Rioja"},
+            'Nordeste': {"Corrientes", "Misiones", "Chaco", "Formosa"},
+            'Cuyo': {"San Luis", "Mendoza", "San Juan"},
+            'Pampeana': {"Córdoba", "La Pampa", "Buenos Aires", "CABA", "Santa Fe", "Entre Ríos"},
+            'Patagonia': {"Neuquén", "Río Negro", "Chubut", "Santa Cruz", "Tierra del Fuego, Antártida e Islas del Atlántico Sur"},
+        }
+
+
+        query = Encuestaa.select().where(Encuestaa.provincia == prov.get())
+        for encuesta in query:
+            voto = encuesta.voto
+            if voto in conteos1:
+                conteos1[voto] += 1
+        votos_grafico_1 = list(conteos1.values())
+        print("votos // _prov --->", votos_grafico_1)
+
+        #---------------------------------------------------------
+
+        lista_prov = list(conj_de_prov[regiones.get()])
+        query_reg = Encuestaa.select().where(Encuestaa.provincia << lista_prov)
+        for encuesta in query_reg:
+            voto = encuesta.voto
+            if voto in conteos1:
+                conteos1[voto] += 1
+        votos_grafico_reg = list(conteos1.values())
+        print("votos // _region --->", votos_grafico_reg)
+
+        #---------------------------------------------------------
+
+        rango_etario = edad.get()
+        print(rango_etario)
+        edades=rango_etario.split("-")
+        print(f"edad1-  {edades[0]} // edad2- {edades[1]}")
+        query_edad = Encuestaa.select().where((Encuestaa.edad >= edades[0]) & (Encuestaa.edad <= edades[1]) )
+        for encuesta in query_edad:
+            voto = encuesta.voto
+            if voto in conteos1:
+                conteos1[voto] += 1
+        votos_grafico_edad = list(conteos1.values())
+        print("votos // _rango edad --->", votos_grafico_edad)
+
+
+
+
+        return votos_grafico_1
+
+# ------------------------------------------------------------
 
 
 # ----------------------------------Fun. fecha y hora

@@ -23,7 +23,9 @@ class BotonGenerico(Button):
     }
 
 
-    def __init__(self, x, y, master=None, text="", command=None, config_type="", config_geo="",  **kwargs):
+    def __init__(self, x, y, master=None, text="", command=None,
+                 config_type="", config_geo="",  **kwargs):
+
         super().__init__(master, text=text, command=command, **kwargs)
 
         self.config(**self.config_comun)
@@ -40,8 +42,9 @@ class BotonGenerico(Button):
 class LabelGenerico(Label):
 
     config_esp ={
-        'tipo1': {'bg': 'red', 'font': 'MONOSPACE 10 bold', 'fg':'white'},
-        'tipo2': {'bg': '#ADBACC', 'font': 'MONOSPACE 11 bold', 'fg':'black'},
+        'tipo0': {'bg': 'red', 'font': 'MONOSPACE 9 bold', 'fg': 'black'},
+        'tipo1': {'bg': 'red', 'font': 'MONOSPACE 10 bold', 'fg': 'white'},
+        'tipo2': {'bg': '#ADBACC', 'font': 'MONOSPACE 11 bold', 'fg': 'black'},
     }
 
     def __init__(self, x, y, master=None, text="", config="", **kwargs):
@@ -50,7 +53,16 @@ class LabelGenerico(Label):
         if config in self.config_esp:
             self.config(**self.config_esp[config])
 
-        self.place(x=x, y=y)
+
+        if y==0:
+            if config == 'tipo0':
+                self.place(relx=.4, rely=0.5, anchor='e')
+
+            else:
+                self.place(x=x, rely=0.5, anchor='center')
+
+        else:
+            self.place(x=x, y=y)
 
 
 class FrameGenerico(Frame):
@@ -80,37 +92,50 @@ class EntryGenerico(Entry):
 
 
 class ComboBoxGenerico(Combobox):
+
     lista_candidatos = ["", "Voto en Blanco", "La libertad no avanza", "Por unión la patria",
                        "La SINiestra", "Juntos sin el cambio"]
 
-    lista_provincias = ["","Buenos Aires", "CABA", "Catamarca", "Chaco", "Chubut", "Córdoba", "Corrientes", "Entre Ríos",
+    lista_provincias = ["", "Buenos Aires", "CABA", "Catamarca", "Chaco", "Chubut", "Córdoba", "Corrientes", "Entre Ríos",
                         "Formosa", "Jujuy", "La Pampa", "La Rioja", "Mendoza", "Misiones", "Neuquén", "Río Negro", "Salta",
                         "San Juan", "San Luis", "Santa Cruz", "Santa Fe", "Santiago del Estero",
                         "Tierra del Fuego, Antártida e Islas del Atlántico Sur",
                         "Tucumán"]
 
+    lista_regiones = ["", "Noroeste", "Nordeste", "Cuyo",
+                      "Pampeana", "Patagonia",]
+
+    lista_edad = ["", "16-29", "30-39", "40-59", "60-64", ">64",]
+
     opc_lista = {
         'lista_candidatos': lista_candidatos,
-        'lista_provincias': lista_provincias
+        'lista_provincias': lista_provincias,
+        'lista_regiones': lista_regiones,
+        'lista_edad': lista_edad
     }
 
-    config_comun = {
-        'width': 18,
-        'state': 'reandonly',
-        'font': 'MONOSPACE 10',
+    config_tipo = {
+        'tipo1': {'state': 'reandonly', 'font': 'MONOSPACE 10'},
+        'tipo2': {'state': 'reandonly', 'font': 'MONOSPACE 9'},
     }
 
 
-    def __init__(self, x, y, widht, heigth, textvariable, master=None, config_lista="", **kwargs):
+    def __init__(self, x, y, widht, heigth, textvariable, master=None,
+                 config_comun="", config_lista="", **kwargs):
         super().__init__(master, textvariable=textvariable, **kwargs)
 
-        self.configure(**self.config_comun)
-
+        if config_comun in self.config_tipo:
+            self.configure(**self.config_tipo[config_comun])
 
         if config_lista in self.opc_lista:
             self.config(values = self.opc_lista[config_lista])
 
+        if y == 0:
+            self.place(x=x, rely=0.5, anchor='w', width=widht, height=heigth)
+
         self.current(0)
+
+
 
         self.place(x=x, y=y, width=widht, height=heigth)
 
